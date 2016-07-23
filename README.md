@@ -40,7 +40,7 @@ After Vagrant and Virtualbox are setup, run the following commands to install th
 
 **Clone the Repository**
 
-    git clone https://github.com/ryanstreet/magento2-vagrant.git
+    git clone https://github.com/btantlinger/magento2-vagrant.git
 **Navigate to the folder**
 
     cd /path/to/magento2-vagrant/
