@@ -175,8 +175,8 @@ echo "############################################"
 	else
 		composer config -g github-oauth.github.com $1
 		cd /var/www/html/magento2/
-		composer config repositories.magento composer http://packages.magento.com
-		composer require magento/sample-bundle-all:1.0.0
+		#composer config repositories.magento composer http://packages.magento.com
+		composer require magento/sample-bundle-all:1.0.*
 fi
 
 
