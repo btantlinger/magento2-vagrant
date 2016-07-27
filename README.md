@@ -41,7 +41,7 @@ After Vagrant and Virtualbox are setup, run the following commands to install th
 
     cd /path/to/magento2-vagrant/
 
-**(Optional) Add Magento Market Place access keys**
+**(Optional) Add Magento Marketplace access keys**
 
 
 Magento 2.1 can be installed using Composer. However, the Magento Composer repo requires authentication.  To access the magento repo via Composer, you must create authentication keys on the Magento Marketplace.
