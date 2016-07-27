@@ -154,6 +154,18 @@ echo "##### INSTALLING COMPOSER #####"
 echo "###############################"
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
+if ! [[ -z "$1" || -z "$2" ]]; then
+echo "{
+    \"http-basic\": {
+        \"repo.magento.com\": {
+		\"username\": \"$1\",
+		\"password\": \"$2\"
+        }
+    }
+}" > ~/.config/composer/auth.json
+cd /var/www/html/magento2
+composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition .
+fi
 
 # Set Ownership and Permissions
 echo "#############################################"
@@ -163,23 +175,6 @@ chown -R www-data /var/www/html/magento2/
 find /var/www/html/magento2/ -type d -exec chmod 700 {} \;
 find /var/www/html/magento2/ -type f -exec chmod 600 {} \;
 
-# Magento 2 Installation from composer
-echo "############################################"
-echo "##### INSTALLING COMPOSER DEPENDENDIES #####"
-echo "############################################"
- if [ -z "$1" ]
- 	then
- 		echo "################################################################"
- 		echo "##### NO GITHUB API TOKEN.  SKIPPING COMPOSER INSTALLATION #####"
-		echo "################################################################"
-	else
-		composer config -g github-oauth.github.com $1
-		cd /var/www/html/magento2/
-		#composer config repositories.magento composer http://packages.magento.com
-		#composer require magento/sample-bundle-all:1.0.*
-fi
-
-
 # Restart apache
 echo "#############################"
 echo "##### RESTARTING APACHE #####"
@@ -188,13 +183,15 @@ service apache2 restart
 
 # Post Up Message
 echo "Magento2 Vagrant Box ready!"
-if [ -z "$1" ]
-	then
+if [[ -z "$1" || -z "$2" ]]; then
 		echo "Final installation instructions:"
 		echo "run 'vagrant ssh'"
 		echo "run 'cd /var/www/html/magento2/'"
-		echo "run 'composer install'"
-		echo "When prompted, enter your github API credentials"
+		echo "run the command below"
+		echo "---------------------------------------------------------------------------------------------"
+		echo "create-project --repository-url=https://repo.magento.com/ magento/project-community-edition ."
+		echo "---------------------------------------------------------------------------------------------"
+		echo "When prompted, enter your Magento Marketplace access keys"
 		echo "Afterward finish installation."
 fi
 echo "Go to http://192.168.33.10/magento2/setup/ to finish installation."

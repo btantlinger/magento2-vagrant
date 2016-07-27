@@ -3,11 +3,13 @@
 
 VAGRANTFILE_API_VERSION = "2"
 
-  # Enter Your Github API Token Below. 
-  # If not entered, you must manually run composer to finish the installation.
-  # See http://devdocs.magento.com/guides/v1.0/install-gde/trouble/tshoot_rate-limit.html
+  # Enter Your Magento Market place Access Keys Below. 
+  # This will allow the provisioner script to install magento automatically via composer
+  # See http://devdocs.magento.com/guides/v2.0/install-gde/prereq/connect-auth.html#auth-get
+  # If these two variables are left blank, then you will need to run composer manually
   
-  githubToken = ""
+  publicKey = ""
+  privateKey = ""
   
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # All Vagrant configuration is done here. The most common configuration
@@ -46,7 +48,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   ## Bootstrap script to provision box.  All installation methods can go here. 
   config.vm.provision "shell" do |s|
     s.path = "bootstrap.sh"
-    s.args   = [githubToken]
+    s.args   = [publicKey,privateKey]
   end
   
   # If you need to forward ports, you can use this command:

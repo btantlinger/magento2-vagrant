@@ -1,14 +1,10 @@
 # Vagrant for Magento2
 
-## Update
-
-**Magento 2 codebase now lives in folder.  You must run an additional command to install Magento 2!**
-
 Vagrant Setup for Magento 2 install.  All prerequisites setup and running. 
 
-Installs all requisites for Magento 2.  Utilizes Ubuntu 14.04. 
+Installs all requisites for Magento 2.1.x  Utilizes Ubuntu 14.04. 
 
-You can reference the Magento2 installation guide [here.](http://devdocs.magento.com/guides/v1.0/install-gde/bk-install-guide.html)
+You can reference the Magento2 installation guide [here.](http://devdocs.magento.com/guides/v2.1/install-gde/bk-install-guide.html)
 
 ## Prerequisites
 ### Virtualbox
@@ -45,36 +41,39 @@ After Vagrant and Virtualbox are setup, run the following commands to install th
 
     cd /path/to/magento2-vagrant/
 
-**Install Magento 2 Repo**
+**(Optional) Add Magento Market Place access keys**
 
-    git submodule init
-    git submodule update
+
+Magento 2.1 can be installed using Composer. However, the Magento Composer repo requires authentication.  To access the magento repo via Composer, you must create authentication keys on the Magento Marketplace.
+
+Read [this](http://devdocs.magento.com/guides/v2.1/install-gde/prereq/connect-auth.html) guide on how to create your authentication keys.  Once you have created the keys, open up the `Vagrantfile` and place them here:
+
+    publicKey = ""
+    privateKey = ""
     
-This operation can be quite long, especially the last moments. Do not quit until done unless the Magento 2 repository won't be completely configured.
-
-**(Optional) Add Github Personal Access Token**
-
-Read [this](http://devdocs.magento.com/guides/v1.0/install-gde/trouble/tshoot_rate-limit.html) guide to get a personal access token.  Once you have created the token, open up the `Vagrantfile` and place the token here:
-
-    githubToken = ""
-_Note: If you did not enter a personal access token, Composer will not run automatically.  You will have to run it yourself to finish installation._
+_Note: If you did not enter any authentication keys, Composer will not run automatically.  You will have to run it yourself to finish installation._
 
 **Run Vagrant Command**
 
     vagrant up
-
 
 The configuration process will take a while, especially if it is the first time you use a vagrant box with this virtual machine, because this one had to be completely downloaded at the first utilization.
 
 Once completed, you can connect via SSH to you virtual machine, with putty for example. The adress and the port are usually
 127.0.0.1 and 2222 respectively, but it can change if you have many VMs running at the same time.
 
-** Download Magento 2**
-Once your VM is running, connect to it via SSH and go to the /var/www/html/magento2 directory. There run the command
+If you added your autentication keys to the `VagrantFile`, Magento 2.1 should be fully deployed to your VM.  If you did not add your authentication keys, you will need to manually run the composer command on your VM via the commands below:
 
-    composer install
-   
-This will download all the components of the vendor folder of Magento 2. These components are required to use this application. It will take a while, and after that, you installation will be completed, and you will be able to acces to your magento 2 installation via your browser.
+    vagrant ssh
+    cd /var/www/html/magento2
+    create-project --repository-url=https://repo.magento.com/ magento/project-community-edition .
+    
+**Sample Data**
+
+Magento's sample data package can be installed by running the following command from the Magento root directory:
+
+    bin/magento sampledata:deploy
+
 
 **Other Info**
 
